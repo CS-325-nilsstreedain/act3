@@ -16,46 +16,35 @@ output: 23 1 3 4
 submit to Gradescope as act3.cpp
 *******************************************************************************/
 #include <iostream>
-#include <fstream>
 
 void printTradingPosts(int* prev, int num) {
-	for (int i = 0 ; i < num; i++)
-		if (prev[i] != 0) {
-			int temp = i;
-			if (i != 1)
-				temp++;
-			std::cout << " " << temp;
-		}
-}
-
-int min(int a, int b) {
-	return (a > b) ? b : a;
+	for (int i = 1; i <= num; i++)
+		if (prev[i] != prev[i - 1])
+			std::cout << prev[i] << " ";
 }
 
 int main() {
-	int R[100][100];
 	int num;
-	int minCost;   // minimum cost
-	int prev[100]; // back pointer to the previous post in the optimal solution
-
 	std::cin >> num;
-    for (int i = 1; i <= num; i++)
+	
+	int R[100][100];
+	int cost[100]; // Minimum total penalty when you stop at place j from i
+	int prev[100]; // back pointer to the previous post in the optimal solution
+	
+	for (int i = 1; i <= num; i++)
 		for(int j = 1; j <= num; j++)
 			std::cin >> R[i][j];
 
 	// find the minimum cost
-	prev[0] = 0;
-	for (int j = 1; j <= num; j++) {
-		prev[j] = INT_MAX;
-		for (int i = 0; i < j; i++)
-			if (R[i][j] != 0 && R[i][j] != -1)
-				prev[j] = min(prev[i] + R[i][j], prev[j]);
-	}
+	for (int i = 2; i <= num; i++)
+		for (int j = 1; j < i; j++)
+            if (cost[i] > cost[j] + R[j][i] || cost[i] == 0) {
+				cost[i] = cost[j] + R[j][i];
+				prev[i] = j;
+            }
 	
-	minCost = prev[num] - INT_MAX;
-	
-	std::cout << minCost;
+	std::cout << cost[num] << " ";
 	printTradingPosts(prev, num);
-	std::cout << std::endl;
+	std::cout << num << std::endl;
 	return 1;
 }
