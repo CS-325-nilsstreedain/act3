@@ -17,25 +17,19 @@ submit to Gradescope as act3.cpp
 *******************************************************************************/
 #include <iostream>
 
-void printTradingPosts(int* prev, int num) {
-	for (int i = 1; i <= num; i++)
-		if (prev[i] != prev[i - 1])
-			std::cout << prev[i] << " ";
-}
-
 int main() {
 	int num;
-	std::cin >> num;
-	
 	int R[100][100];
 	int cost[100]; // Minimum total penalty when you stop at place j from i
 	int prev[100]; // back pointer to the previous post in the optimal solution
 	
+	// Parse cli input
+	std::cin >> num;
 	for (int i = 1; i <= num; i++)
 		for(int j = 1; j <= num; j++)
 			std::cin >> R[i][j];
 
-	// find the minimum cost
+	// Find minimum cost
 	for (int i = 2; i <= num; i++)
 		for (int j = 1; j < i; j++)
             if (cost[i] > cost[j] + R[j][i] || cost[i] == 0) {
@@ -43,8 +37,12 @@ int main() {
 				prev[i] = j;
             }
 	
+	// Print results
 	std::cout << cost[num] << " ";
-	printTradingPosts(prev, num);
+	for (int i = 1; i <= num; i++)
+		if (prev[i] != prev[i - 1])
+			std::cout << prev[i] << " ";
 	std::cout << num << std::endl;
+	
 	return 1;
 }
