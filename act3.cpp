@@ -38,11 +38,10 @@ int main() {
             }
 	
 	// Print results
-	std::cout << cost[num] << " ";
+	printf("%i ", cost[num]);
 	for (int i = 1; i <= num; i++)
 		if (prev[i] != prev[i - 1])
-			std::cout << prev[i] << " ";
-	std::cout << num << std::endl;
-	
+			printf("%i ", prev[i]);
+	printf("%i\n", num);
 	return 1;
 }
